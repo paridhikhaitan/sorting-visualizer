@@ -13,7 +13,10 @@ class Visualiser extends React.Component {
     super(props);
     this.state = {
       all_values: [],
-      len_all_values: 50
+      len_all_values: 50,
+      bar_color: "#f1c5c5",
+      swap_color: "#faf0af",
+      consider_color: "#8bcdcd"
     };
     this.generateRandomArray = this.generateRandomArray.bind(this);
     this.mergeSort = this.mergeSort.bind(this);
@@ -34,6 +37,7 @@ class Visualiser extends React.Component {
   }
 
   generateRandomArray = (min_num, max_num, reversed) => {
+    this.setState({});
     const all_values = [];
     var min = Math.ceil(min_num);
     var max = Math.floor(max_num);
@@ -86,13 +90,17 @@ class Visualiser extends React.Component {
       setTimeout(() => {
         if (i % 2 === 0) {
           for (let child of value_bars.childNodes) {
-            child.style.backgroundColor = "pink";
+            child.style.backgroundColor = this.state.bar_color;
           }
           var first = array[i][0];
           var second = array[i][1];
 
-          value_bars.childNodes[first].style.backgroundColor = "blue";
-          value_bars.childNodes[second].style.backgroundColor = "blue";
+          value_bars.childNodes[
+            first
+          ].style.backgroundColor = this.state.consider_color;
+          value_bars.childNodes[
+            second
+          ].style.backgroundColor = this.state.consider_color;
         } else {
           var first_swap = array[i][0];
           var second_swap = array[i][1];
@@ -100,13 +108,17 @@ class Visualiser extends React.Component {
           if (first_swap != -1 && second_swap != -1) {
             var first_height = value_bars.childNodes[first_swap].style.height;
             var second_height = value_bars.childNodes[second_swap].style.height;
-            value_bars.childNodes[first_swap].style.backgroundColor = "yellow";
-            value_bars.childNodes[second_swap].style.backgroundColor = "yellow";
+            value_bars.childNodes[
+              first_swap
+            ].style.backgroundColor = this.state.swap_color;
+            value_bars.childNodes[
+              second_swap
+            ].style.backgroundColor = this.state.swap_color;
             value_bars.childNodes[first_swap].style.height = second_height;
             value_bars.childNodes[second_swap].style.height = first_height;
           }
         }
-      }, i * 100);
+      }, i * 10);
     }
 
     // for (let i = 0; i < animations.length; i++) {
