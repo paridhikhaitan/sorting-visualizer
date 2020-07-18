@@ -13,7 +13,7 @@ class Visualiser extends React.Component {
     super(props);
     this.state = {
       all_values: [],
-      len_all_values: 50,
+      len_all_values: 100,
       bar_color: "#f1c5c5",
       swap_color: "#faf0af",
       consider_color: "#8bcdcd"
@@ -47,9 +47,10 @@ class Visualiser extends React.Component {
       if (reversed === false) {
         num = Math.floor(Math.random() * (max - min)) + min;
       } else {
-        max = min + 10;
+        // max = min + 10;
+        min = max - 10
         num = Math.floor(Math.random() * (max - min)) + min;
-        min = num;
+        max = num
       }
 
       all_values.push(num);
@@ -118,6 +119,7 @@ class Visualiser extends React.Component {
             value_bars.childNodes[second_swap].style.height = first_height;
           }
         }
+
       }, i * 10);
     }
 
