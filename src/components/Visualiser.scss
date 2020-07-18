@@ -1,0 +1,28 @@
+
+.value-container {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+.value-bar {
+  background-color: palevioletred;
+  margin: 2px;
+  width: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  .sorting-buttons,
+  .array-buttons {
+    display: flex;
+    border: 2px solid paleturquoise;
+    background-color: powderblue;
+    margin: 10px;
+    > * {
+      margin: 10px;
+    }
+  }
+}
