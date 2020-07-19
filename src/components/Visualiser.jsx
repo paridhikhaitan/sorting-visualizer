@@ -1,6 +1,6 @@
 import React from "react";
 import "./Visualiser.scss";
-import { mergeSort, quickSort, bubbleSort } from "./Algorithms";
+import { mergeSort, quickSort, bubbleSort, insertionSort } from "./Algorithms";
 
 /*
 Customisations : 
@@ -13,13 +13,14 @@ class Visualiser extends React.Component {
     super(props);
     this.state = {
       all_values: [],
-      len_all_values: 100,
+      len_all_values: 10,
       bar_color: "#f1c5c5",
       swap_color: "#faf0af",
       consider_color: "#8bcdcd",
       speed: 1000
     };
     this.generateRandomArray = this.generateRandomArray.bind(this);
+    this.animateSorting = this.animateSorting.bind(this);
     this.mergeSort = this.mergeSort.bind(this);
     this.quickSort = this.quickSort.bind(this);
     this.heapSort = this.heapSort.bind(this);
@@ -33,9 +34,9 @@ class Visualiser extends React.Component {
     //document.getElementById("pause").addEventListener("click", ()=>{alert("Hello World")})
   }
 
-  sleep(ms) {
+  sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
+  };
 
   generateRandomArray = (min_num, max_num, reversed) => {
     this.setState({});
@@ -63,30 +64,9 @@ class Visualiser extends React.Component {
     this.setState({ all_values });
   };
 
-  mergeSort = () => {
-    //Merge Sort
-    mergeSort();
-  };
-
-  quickSort = () => {
-    //Quick Sort
-    quickSort();
-  };
-
-  bubbleSort = async () => {
-    //Bubble Sort
-    //console.log(bubbleSort(this.state.all_values))
-    const [sorted_values, animations] = bubbleSort(this.state.all_values);
-
+  animateSorting = async animations => {
     const value_bars = document.getElementsByClassName("value-container")[0];
-
-    const array = [];
-    animations.forEach(element => {
-      array.push(element.compare);
-      array.push(element.swap);
-    });
-
-    console.log(array);
+    var inversions = 0
 
     for (let i = 0; i < animations.length; i++) {
       for (let child of value_bars.childNodes) {
@@ -107,7 +87,9 @@ class Visualiser extends React.Component {
       first = animations[i].swap[0];
       second = animations[i].swap[1];
 
-      if (first != -1 && second != -1) {
+      if (first !== -1 && second !== -1) {
+        inversions++
+        document.getElementById("inversions").innerHTML = inversions
         var first_height = value_bars.childNodes[first].style.height;
         var second_height = value_bars.childNodes[second].style.height;
 
@@ -126,94 +108,119 @@ class Visualiser extends React.Component {
     }
   };
 
-heapSort = () => {
-  //Selection Sort
-};
+  mergeSort = () => {
+    //Merge Sort
+    mergeSort();
+  };
 
-insertionSort = () => {
-  //Insertion Sort
-};
+  quickSort = () => {
+    //Quick Sort
+    quickSort();
+  };
 
-render(){
-return (
-  <>
-    <div className="button-container">
-      <div className="array-buttons">
-        <button
-          onClick={() => {
-            this.generateRandomArray(10, 500, false);
-          }}
-        >
-          Generate Random Array
-        </button>
+  bubbleSort = () => {
+    //Bubble Sort
+    //console.log(bubbleSort(this.state.all_values))
+    const [sorted_values, animations] = bubbleSort(this.state.all_values);
+    this.animateSorting(animations);
+  };
 
-        <button
-          onClick={() => {
-            this.generateRandomArray(300, 500, false);
-          }}
-        >
-          Generate Almost Sorted Array
-        </button>
+  heapSort = () => {
+    //Selection Sort
 
-        <button
-          onClick={() => {
-            this.generateRandomArray(10, 500, true);
-          }}
-        >
-          Generate Reversed Array
-        </button>
-      </div>
+  };
 
-      <div className="sorting-buttons">
-        <button
-          onClick={() => {
-            this.mergeSort();
-          }}
-        >
-          Merge Sort
-        </button>
-        <button
-          onClick={() => {
-            this.quickSort();
-          }}
-        >
-          Quick Sort
-        </button>
-        <button
-          onClick={() => {
-            this.heapSort();
-          }}
-        >
-          Heap Sort
-        </button>
-        <button
-          onClick={() => {
-            this.insertionSort();
-          }}
-        >
-          Insertion Sort
-        </button>
-        <button
-          onClick={() => {
-            this.bubbleSort();
-          }}
-        >
-          Bubble Sort
-        </button>
-      </div>
-    </div>
-    <div className="value-container">
-      {this.state.all_values.map((value, index) => {
-        var height = value;
-        //   var width = "2px"
-        return (
-          <div className="value-bar" key={index} style={{ height }}>
-            {/* {value} : {index} */}
+  insertionSort = () => {
+    //Insertion Sort
+    const animations = insertionSort(this.state.all_values)
+    this.animateSorting(animations)
+  };
+
+  render() {
+    return (
+      <>
+        <div className="button-container">
+          <div className="array-buttons">
+            <button
+              onClick={() => {
+                this.generateRandomArray(10, 500, false);
+              }}
+            >
+              Generate Random Array
+            </button>
+
+            <button
+              onClick={() => {
+                this.generateRandomArray(300, 500, false);
+              }}
+            >
+              Generate Almost Sorted Array
+            </button>
+
+            <button
+              onClick={() => {
+                this.generateRandomArray(10, 500, true);
+              }}
+            >
+              Generate Reversed Array
+            </button>
           </div>
-        );
-      })}
-    </div>
-  </>
-);}}
+
+          <div className="sorting-buttons">
+            <button
+              onClick={() => {
+                this.mergeSort();
+              }}
+            >
+              Merge Sort
+            </button>
+            <button
+              onClick={() => {
+                this.quickSort();
+              }}
+            >
+              Quick Sort
+            </button>
+            <button
+              onClick={() => {
+                this.heapSort();
+              }}
+            >
+              Heap Sort
+            </button>
+            <button
+              onClick={() => {
+                this.insertionSort();
+              }}
+            >
+              Insertion Sort
+            </button>
+            <button
+              onClick={() => {
+                this.bubbleSort();
+              }}
+            >
+              Bubble Sort
+            </button>
+          </div>
+        </div>
+        <div className="value-container">
+          {this.state.all_values.map((value, index) => {
+            var height = value;
+            //   var width = "2px"
+            return (
+              <div className="value-bar" key={index} style={{ height }}>
+                {/* {value} : {index} */}
+              </div>
+            );
+          })}
+        </div>
+        <div>
+          <h2>Number of inversions : <span id="inversions">0</span></h2>
+        </div>
+      </>
+    );
+  }
+}
 
 export default Visualiser;
