@@ -16,7 +16,8 @@ class Visualiser extends React.Component {
       len_all_values: 100,
       bar_color: "#f1c5c5",
       swap_color: "#faf0af",
-      consider_color: "#8bcdcd"
+      consider_color: "#8bcdcd",
+      speed: 1000
     };
     this.generateRandomArray = this.generateRandomArray.bind(this);
     this.mergeSort = this.mergeSort.bind(this);
@@ -48,9 +49,9 @@ class Visualiser extends React.Component {
         num = Math.floor(Math.random() * (max - min)) + min;
       } else {
         // max = min + 10;
-        min = max - 10
+        min = max - 10;
         num = Math.floor(Math.random() * (max - min)) + min;
-        max = num
+        max = num;
       }
 
       all_values.push(num);
@@ -87,145 +88,132 @@ class Visualiser extends React.Component {
 
     console.log(array);
 
-    for (let i = 0; i < array.length; i++) {
-      setTimeout(() => {
-        if (i % 2 === 0) {
-          for (let child of value_bars.childNodes) {
-            child.style.backgroundColor = this.state.bar_color;
-          }
-          var first = array[i][0];
-          var second = array[i][1];
+    for (let i = 0; i < animations.length; i++) {
+      for (let child of value_bars.childNodes) {
+        child.style.backgroundColor = this.state.bar_color;
+      }
+      var first = animations[i].compare[0];
+      var second = animations[i].compare[1];
 
-          value_bars.childNodes[
-            first
-          ].style.backgroundColor = this.state.consider_color;
-          value_bars.childNodes[
-            second
-          ].style.backgroundColor = this.state.consider_color;
-        } else {
-          var first_swap = array[i][0];
-          var second_swap = array[i][1];
+      value_bars.childNodes[
+        first
+      ].style.backgroundColor = this.state.consider_color;
+      value_bars.childNodes[
+        second
+      ].style.backgroundColor = this.state.consider_color;
 
-          if (first_swap != -1 && second_swap != -1) {
-            var first_height = value_bars.childNodes[first_swap].style.height;
-            var second_height = value_bars.childNodes[second_swap].style.height;
-            value_bars.childNodes[
-              first_swap
-            ].style.backgroundColor = this.state.swap_color;
-            value_bars.childNodes[
-              second_swap
-            ].style.backgroundColor = this.state.swap_color;
-            value_bars.childNodes[first_swap].style.height = second_height;
-            value_bars.childNodes[second_swap].style.height = first_height;
-          }
-        }
+      await this.sleep(this.state.speed);
 
-      }, i * 10);
+      first = animations[i].swap[0];
+      second = animations[i].swap[1];
+
+      if (first != -1 && second != -1) {
+        var first_height = value_bars.childNodes[first].style.height;
+        var second_height = value_bars.childNodes[second].style.height;
+
+        value_bars.childNodes[
+          first
+        ].style.backgroundColor = this.state.swap_color;
+        value_bars.childNodes[
+          second
+        ].style.backgroundColor = this.state.swap_color;
+        await this.sleep(this.state.speed);
+
+        value_bars.childNodes[first].style.height = second_height;
+        value_bars.childNodes[second].style.height = first_height;
+        await this.sleep(this.state.speed);
+      }
     }
-
-    // for (let i = 0; i < animations.length; i++) {
-    //   setTimeout(() => {
-    //     for (let child of value_bars.childNodes) {
-    //       child.style.backgroundColor = "pink";
-    //     }
-    //     var first = animations[i].compare[0];
-    //     var second = animations[i].compare[1];
-    //     value_bars.childNodes[first].style.backgroundColor = "blue";
-    //     value_bars.childNodes[second].style.backgroundColor = "blue";
-    //   }, i * 100);
-    // }
   };
 
-  heapSort = () => {
-    //Selection Sort
-  };
+heapSort = () => {
+  //Selection Sort
+};
 
-  insertionSort = () => {
-    //Insertion Sort
-  };
+insertionSort = () => {
+  //Insertion Sort
+};
 
-  render() {
-    return (
-      <>
-        <div className="button-container">
-          <div className="array-buttons">
-            <button
-              onClick={() => {
-                this.generateRandomArray(10, 500, false);
-              }}
-            >
-              Generate Random Array
-            </button>
+render(){
+return (
+  <>
+    <div className="button-container">
+      <div className="array-buttons">
+        <button
+          onClick={() => {
+            this.generateRandomArray(10, 500, false);
+          }}
+        >
+          Generate Random Array
+        </button>
 
-            <button
-              onClick={() => {
-                this.generateRandomArray(300, 500, false);
-              }}
-            >
-              Generate Almost Sorted Array
-            </button>
+        <button
+          onClick={() => {
+            this.generateRandomArray(300, 500, false);
+          }}
+        >
+          Generate Almost Sorted Array
+        </button>
 
-            <button
-              onClick={() => {
-                this.generateRandomArray(10, 500, true);
-              }}
-            >
-              Generate Reversed Array
-            </button>
+        <button
+          onClick={() => {
+            this.generateRandomArray(10, 500, true);
+          }}
+        >
+          Generate Reversed Array
+        </button>
+      </div>
+
+      <div className="sorting-buttons">
+        <button
+          onClick={() => {
+            this.mergeSort();
+          }}
+        >
+          Merge Sort
+        </button>
+        <button
+          onClick={() => {
+            this.quickSort();
+          }}
+        >
+          Quick Sort
+        </button>
+        <button
+          onClick={() => {
+            this.heapSort();
+          }}
+        >
+          Heap Sort
+        </button>
+        <button
+          onClick={() => {
+            this.insertionSort();
+          }}
+        >
+          Insertion Sort
+        </button>
+        <button
+          onClick={() => {
+            this.bubbleSort();
+          }}
+        >
+          Bubble Sort
+        </button>
+      </div>
+    </div>
+    <div className="value-container">
+      {this.state.all_values.map((value, index) => {
+        var height = value;
+        //   var width = "2px"
+        return (
+          <div className="value-bar" key={index} style={{ height }}>
+            {/* {value} : {index} */}
           </div>
-
-          <div className="sorting-buttons">
-            <button
-              onClick={() => {
-                this.mergeSort();
-              }}
-            >
-              Merge Sort
-            </button>
-            <button
-              onClick={() => {
-                this.quickSort();
-              }}
-            >
-              Quick Sort
-            </button>
-            <button
-              onClick={() => {
-                this.heapSort();
-              }}
-            >
-              Heap Sort
-            </button>
-            <button
-              onClick={() => {
-                this.insertionSort();
-              }}
-            >
-              Insertion Sort
-            </button>
-            <button
-              onClick={() => {
-                this.bubbleSort();
-              }}
-            >
-              Bubble Sort
-            </button>
-          </div>
-        </div>
-        <div className="value-container">
-          {this.state.all_values.map((value, index) => {
-            var height = value;
-            //   var width = "2px"
-            return (
-              <div className="value-bar" key={index} style={{ height }}>
-                {/* {value} : {index} */}
-              </div>
-            );
-          })}
-        </div>
-      </>
-    );
-  }
-}
+        );
+      })}
+    </div>
+  </>
+);}}
 
 export default Visualiser;
