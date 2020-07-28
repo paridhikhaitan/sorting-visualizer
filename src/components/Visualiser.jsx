@@ -20,7 +20,7 @@ class Visualiser extends React.Component {
     super(props);
     this.state = {
       all_values: [],
-      len_all_values: 100,
+      len_all_values: 6,
       bar_color: "#f1c5c5",
       swap_color: "#faf0af",
       consider_color: "#8bcdcd",
@@ -135,6 +135,7 @@ class Visualiser extends React.Component {
 
   bogoSort = async (array_values) => {
     const animations_array = [];
+    const start_time = new Date().getTime()
     const value_bars = document.getElementsByClassName("value-container")[0]
 
     const len = array_values.length;
@@ -164,7 +165,6 @@ class Visualiser extends React.Component {
         value_bars.childNodes[i].style.height = `${temp}px`
 
       }
-      console.log(array_values);
       return array_values;
     };
 
@@ -173,6 +173,10 @@ class Visualiser extends React.Component {
       shuffle(array_values);
       await this.sleep(this.state.speed)
     }
+
+    const end_time = new Date().getTime()
+
+    console.log((end_time - start_time)/1000)
   };
 
   bubbleSort = () => {
