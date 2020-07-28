@@ -169,9 +169,9 @@ class Visualiser extends React.Component {
     };
 
     while (bogoHelperSorted(array_values) === false) {
-      await this.sleep(1)
+      await this.sleep(this.state.speed)
       shuffle(array_values);
-      await this.sleep(1)
+      await this.sleep(this.state.speed)
     }
   };
 
@@ -264,6 +264,13 @@ class Visualiser extends React.Component {
               }}
             >
               Bogo Sort
+            </button>
+            <button
+              onClick={() => {
+                window.location.reload()
+              }}
+            >
+              Stop
             </button>
           </div>
         </div>
