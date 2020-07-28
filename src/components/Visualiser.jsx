@@ -1,6 +1,12 @@
 import React from "react";
 import "./Visualiser.scss";
-import { mergeSort, quickSort, bubbleSort, insertionSort } from "./Algorithms";
+import {
+  mergeSort,
+  quickSort,
+  bubbleSort,
+  insertionSort,
+  bogoSort
+} from "./Algorithms";
 
 /*
 Customisations : 
@@ -27,6 +33,7 @@ class Visualiser extends React.Component {
     this.heapSort = this.heapSort.bind(this);
     this.bubbleSort = this.bubbleSort.bind(this);
     this.insertionSort = this.insertionSort.bind(this);
+    this.bogoSort = this.bogoSort.bind(this);
     this.sleep = this.sleep.bind(this);
   }
 
@@ -111,7 +118,8 @@ class Visualiser extends React.Component {
     }
 
     for (let child of value_bars.childNodes) {
-      child.style.backgroundColor = "#00badb";
+      child.style.backgroundColor = "#e5edb7";
+      await this.sleep(this.state.speed);
     }
   };
 
@@ -123,6 +131,48 @@ class Visualiser extends React.Component {
   quickSort = () => {
     //Quick Sort
     quickSort();
+  };
+
+  bogoSort = async (array_values) => {
+    const animations_array = [];
+    const value_bars = document.getElementsByClassName("value-container")[0]
+
+    const len = array_values.length;
+    const bogoHelperSorted = array_values => {
+      for (let child of value_bars.childNodes){
+        child.style.backgroundColor = this.state.bar_color
+      }
+      for (let i = 0; i < len - 1; i++) {
+        if (array_values[i] > array_values[i + 1]) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    const shuffle = array_values => {
+      for (let i = 0; i < len; i++) {
+        var random_number = Math.floor(Math.random()*len);
+        var temp = array_values[random_number];
+
+        value_bars.childNodes[random_number].style.backgroundColor = this.state.consider_color
+        array_values[random_number] = array_values[i];
+        value_bars.childNodes[random_number].style.height = `${array_values[i]}px`
+
+        value_bars.childNodes[i].style.backgroundColor = this.state.consider_color
+        array_values[i] = temp;
+        value_bars.childNodes[i].style.height = `${temp}px`
+
+      }
+      console.log(array_values);
+      return array_values;
+    };
+
+    while (bogoHelperSorted(array_values) === false) {
+      await this.sleep(1)
+      shuffle(array_values);
+      await this.sleep(1)
+    }
   };
 
   bubbleSort = () => {
@@ -207,6 +257,13 @@ class Visualiser extends React.Component {
               }}
             >
               Bubble Sort
+            </button>
+            <button
+              onClick={() => {
+                this.bogoSort(this.state.all_values);
+              }}
+            >
+              Bogo Sort
             </button>
           </div>
         </div>

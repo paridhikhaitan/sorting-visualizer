@@ -8,6 +8,39 @@ export const quickSort = () => {
   console.log("QUICK SORT");
 };
 
+// export const bogoSort = array_values => {
+//   console.log("BOGO SORT");
+//   const animations_array = [];
+
+//   const len = array_values.length;
+
+//   const bogoHelperSorted = array_values => {
+  //   for (let i = 0; i < len-1; i++) {
+  //     if (array_values[i] > array_values[i+1]){
+  //       return false
+  //     }
+  //   }
+  //   return true
+  // };
+
+  // const shuffle = array_values => {
+  //   for (let i = 0; i < len; i++) {
+  //     var random_number = Math.floor(Math.random(len));
+  //     var temp = array_values[random_number];
+  //     array_values[random_number] = array_values[i];
+  //     array_values[i] = temp;
+  //   }
+  //   console.log(array_values)
+  //   return array_values;
+  // };
+
+  // while (bogoHelperSorted(array_values) === false) {
+  //   animations_array.push(shuffle(array_values));
+  // }
+
+  // return animations_array;
+// };
+
 /*
 Checks two corresponding elements, and swaps them in the correct position
 Runtime : O(n^2)
