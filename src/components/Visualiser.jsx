@@ -20,11 +20,11 @@ class Visualiser extends React.Component {
     super(props);
     this.state = {
       all_values: [],
-      len_all_values: 6,
+      len_all_values: 20,
       bar_color: "#f1c5c5",
       swap_color: "#faf0af",
       consider_color: "#8bcdcd",
-      speed: 1
+      speed: 100
     };
     this.generateRandomArray = this.generateRandomArray.bind(this);
     this.animateSorting = this.animateSorting.bind(this);
@@ -124,8 +124,50 @@ class Visualiser extends React.Component {
   };
 
   mergeSort = () => {
-    //Merge Sort
-    mergeSort();
+    const value_bars = document.getElementsByClassName("value-container")[0];
+    const mergeHelper = (arr, l, r) => {
+      if (l < r) {
+        var m = Math.floor(l + (r - l) / 2);
+        console.log(m);
+        mergeHelper(arr, l, m);
+        mergeHelper(arr, m + 1, r);
+        merge(arr, l, m, r);
+      }
+    };
+    const merge = async (arr, start, mid, end) => {
+      var start2 = mid + 1;
+
+      if (arr[mid] <= arr[start2]) {
+        return;
+      }
+
+      while (start <= mid && start2 <= end) {
+        if (arr[start] <= arr[start2]) {
+          start += 1;
+        } else {
+          var value = arr[start2];
+          var index = start2;
+
+          while (index != start) {
+            arr[index] = arr[index - 1];
+            value_bars.childNodes[index].style.height =
+              value_bars.childNodes[index - 1].style.height;
+            // await this.sleep(this.state.speed);
+            index--;
+          }
+
+          arr[start] = value;
+          value_bars.childNodes[start].style.height = `${value}px`;
+          // await this.sleep(this.state.speed);
+          start++;
+          mid++;
+          start2++;
+        }
+      }
+      console.log(arr);
+    };
+
+    mergeHelper(this.state.all_values, 0, this.state.all_values.length - 1);
   };
 
   quickSort = () => {
@@ -133,15 +175,15 @@ class Visualiser extends React.Component {
     quickSort();
   };
 
-  bogoSort = async (array_values) => {
+  bogoSort = async array_values => {
     const animations_array = [];
-    const start_time = new Date().getTime()
-    const value_bars = document.getElementsByClassName("value-container")[0]
+    const start_time = new Date().getTime();
+    const value_bars = document.getElementsByClassName("value-container")[0];
 
     const len = array_values.length;
     const bogoHelperSorted = array_values => {
-      for (let child of value_bars.childNodes){
-        child.style.backgroundColor = this.state.bar_color
+      for (let child of value_bars.childNodes) {
+        child.style.backgroundColor = this.state.bar_color;
       }
       for (let i = 0; i < len - 1; i++) {
         if (array_values[i] > array_values[i + 1]) {
@@ -153,30 +195,35 @@ class Visualiser extends React.Component {
 
     const shuffle = array_values => {
       for (let i = 0; i < len; i++) {
-        var random_number = Math.floor(Math.random()*len);
+        var random_number = Math.floor(Math.random() * len);
         var temp = array_values[random_number];
 
-        value_bars.childNodes[random_number].style.backgroundColor = this.state.consider_color
+        value_bars.childNodes[
+          random_number
+        ].style.backgroundColor = this.state.consider_color;
         array_values[random_number] = array_values[i];
-        value_bars.childNodes[random_number].style.height = `${array_values[i]}px`
+        value_bars.childNodes[
+          random_number
+        ].style.height = `${array_values[i]}px`;
 
-        value_bars.childNodes[i].style.backgroundColor = this.state.consider_color
+        value_bars.childNodes[
+          i
+        ].style.backgroundColor = this.state.consider_color;
         array_values[i] = temp;
-        value_bars.childNodes[i].style.height = `${temp}px`
-
+        value_bars.childNodes[i].style.height = `${temp}px`;
       }
       return array_values;
     };
 
     while (bogoHelperSorted(array_values) === false) {
-      await this.sleep(this.state.speed)
+      await this.sleep(this.state.speed);
       shuffle(array_values);
-      await this.sleep(this.state.speed)
+      await this.sleep(this.state.speed);
     }
 
-    const end_time = new Date().getTime()
+    const end_time = new Date().getTime();
 
-    console.log((end_time - start_time)/1000)
+    console.log((end_time - start_time) / 1000);
   };
 
   bubbleSort = () => {
@@ -271,7 +318,7 @@ class Visualiser extends React.Component {
             </button>
             <button
               onClick={() => {
-                window.location.reload()
+                window.location.reload();
               }}
             >
               Stop
