@@ -20,11 +20,11 @@ class Visualiser extends React.Component {
     super(props);
     this.state = {
       all_values: [],
-      len_all_values: 20,
+      len_all_values: 10,
       bar_color: "#f1c5c5",
       swap_color: "#faf0af",
       consider_color: "#8bcdcd",
-      speed: 0
+      speed: 100
     };
     this.generateRandomArray = this.generateRandomArray.bind(this);
     this.animateSorting = this.animateSorting.bind(this);
@@ -47,6 +47,11 @@ class Visualiser extends React.Component {
   };
 
   generateRandomArray = (min_num, max_num, reversed) => {
+    const value_bars = document.getElementsByClassName("value-container")[0];
+    for (let child of value_bars.childNodes) {
+      child.style.backgroundColor = this.state.bar_color;
+    }
+
     this.setState({});
     const all_values = [];
     var min = Math.ceil(min_num);
@@ -155,13 +160,25 @@ class Visualiser extends React.Component {
             arr[index] = arr[index - 1];
             value_bars.childNodes[index].style.height =
               value_bars.childNodes[index - 1].style.height;
+            value_bars.childNodes[
+              index
+            ].style.backgroundColor = this.state.consider_color;
             await this.sleep(this.state.speed);
+            value_bars.childNodes[
+              index
+            ].style.backgroundColor = this.state.bar_color;
             index--;
           }
 
           arr[start] = value;
           value_bars.childNodes[start].style.height = `${value}px`;
+          value_bars.childNodes[
+            start
+          ].style.backgroundColor = this.state.consider_color;
           await this.sleep(this.state.speed);
+          value_bars.childNodes[
+            start
+          ].style.backgroundColor = this.state.bar_color;
           start++;
           mid++;
           start2++;
