@@ -24,7 +24,7 @@ class Visualiser extends React.Component {
       bar_color: "#f1c5c5",
       swap_color: "#faf0af",
       consider_color: "#8bcdcd",
-      speed: 100
+      speed: 0
     };
     this.generateRandomArray = this.generateRandomArray.bind(this);
     this.animateSorting = this.animateSorting.bind(this);
@@ -121,17 +121,20 @@ class Visualiser extends React.Component {
       child.style.backgroundColor = "#e5edb7";
       await this.sleep(this.state.speed);
     }
+
+    return;
   };
 
-  mergeSort = () => {
+  mergeSort = async () => {
+    const start_time = new Date().getTime();
     const value_bars = document.getElementsByClassName("value-container")[0];
-    const mergeHelper = (arr, l, r) => {
+    const mergeHelper = async (arr, l, r) => {
       if (l < r) {
         var m = Math.floor(l + (r - l) / 2);
         console.log(m);
-        mergeHelper(arr, l, m);
-        mergeHelper(arr, m + 1, r);
-        merge(arr, l, m, r);
+        await mergeHelper(arr, l, m);
+        await mergeHelper(arr, m + 1, r);
+        await merge(arr, l, m, r);
       }
     };
     const merge = async (arr, start, mid, end) => {
@@ -152,22 +155,29 @@ class Visualiser extends React.Component {
             arr[index] = arr[index - 1];
             value_bars.childNodes[index].style.height =
               value_bars.childNodes[index - 1].style.height;
-            // await this.sleep(this.state.speed);
+            await this.sleep(this.state.speed);
             index--;
           }
 
           arr[start] = value;
           value_bars.childNodes[start].style.height = `${value}px`;
-          // await this.sleep(this.state.speed);
+          await this.sleep(this.state.speed);
           start++;
           mid++;
           start2++;
         }
       }
       console.log(arr);
+      return;
     };
 
-    mergeHelper(this.state.all_values, 0, this.state.all_values.length - 1);
+    await mergeHelper(
+      this.state.all_values,
+      0,
+      this.state.all_values.length - 1
+    );
+    const end_time = new Date().getTime();
+    alert((end_time - start_time) / 1000);
   };
 
   quickSort = () => {
@@ -237,10 +247,13 @@ class Visualiser extends React.Component {
     //Selection Sort
   };
 
-  insertionSort = () => {
+  insertionSort = async () => {
     //Insertion Sort
+    const start_time = new Date().getTime();
     const animations = insertionSort(this.state.all_values);
-    this.animateSorting(animations);
+    await this.animateSorting(animations);
+    const end_time = new Date().getTime();
+    alert((end_time - start_time) / 1000);
   };
 
   render() {
