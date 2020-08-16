@@ -20,11 +20,11 @@ class Visualiser extends React.Component {
     super(props);
     this.state = {
       all_values: [],
-      len_all_values: 10,
+      len_all_values: 100,
       bar_color: "#f1c5c5",
       swap_color: "#faf0af",
       consider_color: "#8bcdcd",
-      speed: 100
+      speed: 1
     };
     this.generateRandomArray = this.generateRandomArray.bind(this);
     this.animateSorting = this.animateSorting.bind(this);
