@@ -194,7 +194,7 @@ class Visualiser extends React.Component {
       this.state.all_values.length - 1
     );
     const end_time = new Date().getTime();
-    alert((end_time - start_time) / 1000);
+    alert(`Algorithm took ${(end_time - start_time) / 1000} seconds to complete`);
   };
 
   quickSort = () => {
@@ -270,7 +270,7 @@ class Visualiser extends React.Component {
     const animations = insertionSort(this.state.all_values);
     await this.animateSorting(animations);
     const end_time = new Date().getTime();
-    alert((end_time - start_time) / 1000);
+    alert(`Algorithm took ${(end_time - start_time) / 1000} seconds to complete`);
   };
 
   render() {
